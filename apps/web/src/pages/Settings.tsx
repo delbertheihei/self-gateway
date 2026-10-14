@@ -6,6 +6,9 @@
  *   2. 保留策略与一键清理（明确说明"聚合不会被删，KPI 不归零"）
  *   3. 上游与**互操作自检**（usage 契约、WebSocket、路径前缀）
  *   4. 透传自检 + 价格表 + Codex 接入/回滚指引
+ *
+ * 注意：**主题（外观）切换不在本页** —— v3 起它是随时要改的全局偏好，入口在顶栏最右侧
+ * （`components/shell.tsx` 的 `ThemePicker`，见 docs/04 §4.9）。
  */
 
 import { useEffect, useState } from 'react';
@@ -21,10 +24,9 @@ interface Props {
   refreshKey: number;
   reloadAll: () => void;
   toast: (kind: Toast['kind'], text: string) => void;
-  theme: { mode: 'system' | 'dark' | 'light'; setMode: (m: 'system' | 'dark' | 'light') => void };
 }
 
-export function SettingsPage({ health, refreshKey, reloadAll, toast, theme }: Props) {
+export function SettingsPage({ health, refreshKey, reloadAll, toast }: Props) {
   const settings = useAsync<SettingsPayload>(async () => (await api.settings()).data, [refreshKey]);
   const meta = useAsync<Meta>(async () => (await api.meta()).data, [refreshKey], { pollMs: 30_000 });
 
@@ -370,24 +372,6 @@ Codex 的 ResponseCompleted 把这些字段声明为非 Option，缺失会导致
           <div className="sgw-text-2xs text-tertiary">
             数据目录：<code>{m?.storage.dataDir ?? health?.dataDir ?? '—'}</code>
           </div>
-        </div>
-      </Card>
-      </div>
-
-      {/* ══════════ 外观 ══════════ */}
-      <div className="sgw-span-6">
-      <Card stretch title="外观">
-        <div className="flex items-center justify-between gap-3">
-          <div className="sgw-text-xs text-tertiary">主题（默认跟随系统）</div>
-          <Segmented
-            value={theme.mode}
-            onChange={theme.setMode}
-            options={[
-              { value: 'system', label: '跟随系统' },
-              { value: 'dark', label: '深色' },
-              { value: 'light', label: '浅色' },
-            ]}
-          />
         </div>
       </Card>
       </div>

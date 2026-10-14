@@ -67,6 +67,7 @@
 - **侧栏是悬浮玻璃板**：`margin: var(--sgw-shell-gap)`（外层 12px 间距，右侧为 0）、圆角 `--sgw-radius-xl`、独立投影 `--sgw-glass-shadow`、自身走 `.sgw-glass` + `.sgw-edge`。v1 的"贴边 240px + 可折叠 64px"在 v2 令牌中已不存在（没有 `--sgw-sidebar-collapsed`）。
 - **导航项**：高 40px、`--sgw-radius-sm`、默认透明；选中态（`aria-current="page"`）= `--sgw-accent-subtle` 底 + `--sgw-accent-ring` 描边 + 左侧 **3px `--sgw-accent` 光条**（18px 高胶囊形），比整块填充更克制。
 - **顶栏是玻璃条且常驻在滚动区之上**：`.sgw-topbar` 与 `<main>` 是**同级 flex 子项**（都在壳层右列里上下排列），因此它**不是 sticky** —— 正因如此，它不会和表格 sticky 表头抢层级（表头只在自己的滚动容器内 `position: sticky`）。
+- **顶栏右侧的固定顺序**（从右往左可读）：页面操作（`right` 插槽，可选）→ 时间范围分段控件 → 刷新 → 运行时长胶囊 → **竖分隔 `.sgw-topbar-sep`** → **外观切换（最右，常驻）**。分隔线的作用是把「会改数据的操作」与「全局外观偏好」分开，避免外观按钮被误读成某个页面的动作。
 - **`<main>` 是唯一滚动容器**（`overflow-y: auto`），内容最大 1680px 居中；页面内用 Bento 12 列网格（见 §4.8）排布卡片。
 
 **侧栏底部状态胶囊（反惊吓原则的关键组件）**
@@ -634,6 +635,7 @@
 
 - 属性驱动：`<html data-theme="dark|light">`，令牌全量覆盖，**不写第二套组件样式**
 - 三态：`跟随系统 / 深色 / 浅色`，默认**跟随系统**（系统无偏好 → 深色）
+- **切换入口固定为顶栏最右侧**（`components/shell.tsx` 的 `ThemePicker`，见 §5）：主题是随时想改的全局偏好，**不放设置页**，也不需要先导航；三个选项用图标承载（显示器 / 月牙 / 太阳），文字语义交给 `title` + `aria-label`
 - 持久化：`localStorage['sgw.theme']`；首屏用内联脚本设置以避免闪烁（FOUC）
 - `<meta name="color-scheme" content="dark light">` + 切换时同步 `color-scheme` CSS
 - 图表颜色**必须**从 CSS 变量读取（`getComputedStyle`），保证切主题时图表同步换色
@@ -663,6 +665,7 @@
 | **Skeleton** | 与真实内容同尺寸；`shimmer` 1.6s 循环；KPI 与表格各一套 |
 | **Waterfall** | 横向分段条，5 段（排队/建连/TTFB/首token/生成）；颜色：中性灰渐变 + accent 末段；刻度线每 40ms 或自动；hover 显示该段绝对值 |
 | **TimeRangePicker** | 顶栏右侧的 `.sgw-segmented` 胶囊分段控件，预设 `1 小时 / 24 小时 / 7 天 / 30 天 / 本月`（与 `RangePreset` 一致，v2 未实现"自定义 + 双侧日历"）；选中态写入 URL `?range=` 以保持可分享，图表随之按小时/天切换桶宽 |
+| **ThemePicker** | 顶栏**最右侧**的 `.sgw-segmented` 三段**图标**控件（`data-icon-only="true"`）：显示器 `跟随系统` / 月牙 `深色` / 太阳 `浅色`；选项高 24px、左右 padding 收窄到 8px、图标 14px（与文字段视觉等重）；每段**必须**同时给 `title`（悬停）与 `aria-label`（读屏），因为图标本身 `aria-hidden`；左侧以 `.sgw-topbar-sep`（1×22px `--sgw-border-subtle`）与操作类控件分隔。用图标而非中文标签的原因：顶栏横向空间让给数据（§4.9） |
 | **CopyButton** | 点击 `✓` 反馈 1.2s；复制长 ID 时截断显示 `req_9f2c…` + 完整值 tooltip |
 
 ### 5.1 图表规范（统一由 `packages/shared` 的 viz 配置驱动）

@@ -90,6 +90,7 @@ export function App() {
           onRefresh={reloadAll}
           refreshing={health.loading || meta.loading}
           health={h}
+          theme={{ mode: theme.mode, setMode: theme.setMode }}
         />
 
         <AlertBanner health={h} onOpenSettings={() => navigate('settings')} />
@@ -125,7 +126,6 @@ export function App() {
                 refreshKey={refreshKey}
                 reloadAll={reloadAll}
                 toast={push}
-                theme={{ mode: theme.mode, setMode: theme.setMode }}
               />
             )}
           </div>

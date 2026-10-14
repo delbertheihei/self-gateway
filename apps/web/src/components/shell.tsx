@@ -12,8 +12,12 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 import { Badge, Segmented, Button } from './ui.tsx';
-import { IconOverview, IconRequests, IconSessions, IconSettings, IconRefresh } from './icons.tsx';
+import {
+  IconOverview, IconRequests, IconSessions, IconSettings, IconRefresh,
+  IconMonitor, IconMoon, IconSun,
+} from './icons.tsx';
 import type { Health } from '../lib/api.ts';
+import type { ThemeMode } from '../lib/hooks.ts';
 import { fmtUptime } from '../lib/format.ts';
 
 export type Route = 'overview' | 'requests' | 'sessions' | 'settings';
@@ -125,8 +129,36 @@ export function Sidebar({ route, onNavigate, health }: {
 
 // ─────────────────────────────── 顶栏 ───────────────────────────────
 
+/** 主题状态由 `App` 的 `useTheme()` 持有，这里只负责展示与改值 */
+export interface ThemeControls {
+  mode: ThemeMode;
+  setMode: (m: ThemeMode) => void;
+}
+
+/**
+ * 外观切换（v3 从设置页「外观」卡片搬到顶栏最右侧）。
+ *
+ * 为什么是图标而不是文字：主题是**随时想改的全局偏好**，不该要求先导航到设置页；
+ * 但顶栏右侧已有时间范围分段控件，塞进「跟随系统 / 深色 / 浅色」三个中文标签会挤掉数据区。
+ * 因此用三段图标控件，语义交给 `title`（悬停）与 `aria-label`（读屏），并在最右侧
+ * 用一道竖分隔与左侧的「操作类」控件区分开。
+ */
+function ThemePicker({ mode, onChange }: { mode: ThemeMode; onChange: (m: ThemeMode) => void }) {
+  return (
+    <Segmented
+      value={mode}
+      onChange={onChange}
+      options={[
+        { value: 'system', label: <IconMonitor />, iconOnly: true, title: '外观：跟随系统', ariaLabel: '外观：跟随系统' },
+        { value: 'dark', label: <IconMoon />, iconOnly: true, title: '外观：深色', ariaLabel: '外观：深色' },
+        { value: 'light', label: <IconSun />, iconOnly: true, title: '外观：浅色', ariaLabel: '外观：浅色' },
+      ]}
+    />
+  );
+}
+
 export function TopBar({
-  title, range, onRange, onRefresh, refreshing, right, health,
+  title, range, onRange, onRefresh, refreshing, right, health, theme,
 }: {
   title: string;
   range?: RangePreset;
@@ -135,6 +167,7 @@ export function TopBar({
   refreshing?: boolean;
   right?: ReactNode;
   health: Health | null;
+  theme: ThemeControls;
 }) {
   const uc = health?.usageContract;
   const unreachable = health?.upstream.reachable === false;
@@ -189,6 +222,9 @@ export function TopBar({
             {fmtUptime(health.uptimeSec)}
           </Badge>
         )}
+        {/* ★ 最右侧：外观（主题）切换 —— 全局偏好，不属于任何单个页面的「操作」 */}
+        <span className="sgw-topbar-sep" aria-hidden />
+        <ThemePicker mode={theme.mode} onChange={theme.setMode} />
       </div>
     </header>
   );

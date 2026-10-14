@@ -318,12 +318,19 @@ export function ToastHost({ toasts, dismiss }: {
 
 // ─────────────────────────────── Tabs / Segmented ───────────────────────────────
 
+/**
+ * 分段控件。
+ *
+ * `label` 允许传 ReactNode：顶栏的「外观」切换用**纯图标**三段控件（toolbar 里横向空间
+ * 是稀缺资源，文字让给数据），此时必须同时给出 `title` 与 `ariaLabel` —— 图标本身
+ * `aria-hidden`，语义只能靠这两者承载（docs/04 §7.1）。
+ */
 export function Segmented<T extends string>({
   value, onChange, options, size = 'md',
 }: {
   value: T;
   onChange: (v: T) => void;
-  options: Array<{ value: T; label: string }>;
+  options: Array<{ value: T; label: ReactNode; title?: string; ariaLabel?: string; iconOnly?: boolean }>;
   size?: 'sm' | 'md';
 }) {
   return (
@@ -334,6 +341,9 @@ export function Segmented<T extends string>({
           type="button"
           role="tab"
           aria-selected={o.value === value}
+          aria-label={o.ariaLabel}
+          title={o.title}
+          data-icon-only={o.iconOnly ? 'true' : undefined}
           onClick={() => onChange(o.value)}
         >
           {o.label}

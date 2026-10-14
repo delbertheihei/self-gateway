@@ -66,6 +66,31 @@ export const IconSettings = (p: IconProps) => (
   </svg>
 );
 
+// ─────────────────────────────── 外观（主题） ───────────────────────────────
+
+/** 外观 · 跟随系统：显示器 */
+export const IconMonitor = (p: IconProps) => (
+  <svg {...base(p)}>
+    <rect x="2.5" y="3.5" width="19" height="13" rx="2.5" />
+    <path d="M9 20.5h6M12 16.5v4" />
+  </svg>
+);
+
+/** 外观 · 深色：月牙 */
+export const IconMoon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8a8.6 8.6 0 1 0 10.8 10.8Z" />
+  </svg>
+);
+
+/** 外观 · 浅色：太阳 */
+export const IconSun = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.5 1.5M17.1 17.1l1.5 1.5M18.6 5.4l-1.5 1.5M6.9 17.1l-1.5 1.5" />
+  </svg>
+);
+
 // ─────────────────────────────── 动作 ───────────────────────────────
 
 export const IconRefresh = (p: IconProps) => (

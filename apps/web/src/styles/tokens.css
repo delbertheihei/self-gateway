@@ -541,6 +541,13 @@
     line-height: var(--sgw-leading-xl);
     letter-spacing: -0.02em;
   }
+  /* 顶栏右侧的竖分隔：把「操作」与「外观（全局偏好）」分开，避免误读成同一组动作 */
+  .sgw-topbar-sep {
+    width: 1px;
+    height: 22px;
+    flex: none;
+    background: var(--sgw-border-subtle);
+  }
 
   /* ─────────── Bento 网格（§4.8） ─────────── */
   .sgw-bento {
@@ -781,6 +788,14 @@
     box-shadow: var(--sgw-shadow-xs);
   }
   .sgw-segmented[data-size='sm'] > button { height: 20px; padding: 0 9px; font-size: var(--sgw-text-2xs); }
+  /* 纯图标段（顶栏「外观」）：收窄左右留白，图标撑到 14px 才和文字段视觉等重 */
+  .sgw-segmented > button[data-icon-only='true'] { padding: 0 8px; }
+  .sgw-segmented > button[data-icon-only='true'] > span {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1;
+  }
 
   /* ─────────── Bento 跨列（≥1440 生效；更窄走文件末尾的塌缩规则） ─────────── */
   .sgw-span-3  { grid-column: span 3; }
