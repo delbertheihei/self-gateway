@@ -1,0 +1,49 @@
+# ── SGW 运行时数据（可能含 prompt、密钥、代码片段）──
+data/
+notes/
+*.db
+*.db-wal
+*.db-shm
+
+# ── 本机配置：每台机器的上游地址/端口都不同，绝不提交 ──
+# ★ 提交的是 sgw.config.example.ts；上游地址也可以完全留空，
+#   改在仪表盘「设置 → 上游」里填（存 data/sgw.db，已被上面的 data/ 覆盖）。
+sgw.config.ts
+sgw.config.mts
+sgw.config.js
+sgw.config.mjs
+sgw.config.json
+# 回归/基准脚本在仓库根目录生成的临时配置与数据（.sgw.config.*.ts / .sgw-*-data/）
+.sgw*/
+.sgw.config.*
+
+# ── 调研产物：含内网域名、上游错误体等 ──
+research/
+_research/
+
+# ── 依赖与构建 ──
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# ── 临时脚本 / 一次性产物（调试完就该删，但至少别进版本库）──
+tmp-*
+*.tmp
+
+# ── 日志 ──
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# ── 编辑器 / 系统 ──
+.vscode/*
+!.vscode/settings.json.example
+.idea/
+Thumbs.db
+Desktop.ini
+
+# ── 环境变量（永远不要提交）──
+.env
+.env.*
+!.env.example

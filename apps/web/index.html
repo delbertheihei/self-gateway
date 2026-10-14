@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <title>SGW · Self Gateway</title>
+    <meta name="description" content="本地 AI 用量观测网关仪表盘" />
+    <!-- 阻止搜索引擎/爬虫索引本地仪表盘 -->
+    <meta name="robots" content="noindex, nofollow" />
+    <script>
+      // ★ 在首屏渲染前确定主题，避免 FOUC（闪烁成错误主题）
+      (function () {
+        try {
+          var mode = localStorage.getItem('sgw.theme') || 'system';
+          var resolved = mode === 'system'
+            ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+            : mode;
+          document.documentElement.setAttribute('data-theme', resolved);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

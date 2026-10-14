@@ -1,0 +1,40 @@
+{
+  "name": "sgw",
+  "private": true,
+  "version": "0.1.0",
+  "description": "SGW / Self Gateway —— 本地 AI 用量观测网关（透明透传 + 侧路记账）",
+  "type": "module",
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "packageManager": "pnpm@9.12.0",
+  "scripts": {
+    "start": "node --no-warnings=ExperimentalWarning apps/server/src/index.ts",
+    "dev": "node --no-warnings=ExperimentalWarning --watch apps/server/src/index.ts",
+    "web:dev": "pnpm --filter @sgw/web dev",
+    "web:build": "pnpm --filter @sgw/web build",
+    "build": "pnpm --filter @sgw/web build",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p apps/web/tsconfig.json",
+
+    "verify": "node scripts/verify-all.mjs",
+    "regress": "node scripts/passthrough-regression.mjs",
+    "regress:observe": "node scripts/observe-regression.mjs",
+    "regress:e2e": "node scripts/e2e-smoke.mjs",
+    "regress:robust": "node scripts/robustness-regression.mjs",
+    "bench": "node --no-warnings=ExperimentalWarning scripts/bench-latency.mjs --n 200",
+    "soak": "node --no-warnings=ExperimentalWarning scripts/soak.mjs --minutes 8",
+
+    "probe": "node scripts/probe-upstream.mjs",
+    "probe:matrix": "node scripts/probe-upstream.mjs --matrix-only",
+    "echo": "node scripts/echo-upstream.mjs",
+
+    "point": "node scripts/point-codex.mjs",
+    "point:status": "node scripts/point-codex.mjs --status",
+    "point:dry": "node scripts/point-codex.mjs --dry-run",
+    "restore": "node scripts/point-codex.mjs --restore"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

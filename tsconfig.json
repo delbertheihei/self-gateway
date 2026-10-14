@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@sgw/shared": ["./packages/shared/src/index.ts"],
+      "@sgw/shared/*": ["./packages/shared/src/*"]
+    },
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include": [
+    "apps/server/src/**/*.ts",
+    "packages/shared/src/**/*.ts",
+    "sgw.config.ts",
+    "sgw.config.example.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "apps/web",
+    "data",
+    "notes",
+    ".sgw-*",
+    "**/*.regression.ts",
+    "**/*.abs.ts",
+    "**/*.app.ts",
+    "**/*.bad.ts"
+  ]
+}
